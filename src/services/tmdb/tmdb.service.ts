@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators'
 import { GetMoviesRequest } from '../../commons/dto/get-movies-request.dto'
 import { GetTmdbGenresResponse } from './interfaces/get-tmdb-genres-response.interface'
 import { GetTmdbMoviesResponse } from '../../commons/interfaces/get-tmdb-movies.response.interface'
+import { GetTmdbConfigResponse } from './interfaces/get-tmdb-config-response.interface'
 
 @Injectable()
 export class TmdbService {
@@ -65,5 +66,16 @@ export class TmdbService {
           return throwError(err)
         })
       )
+  }
+
+  getConfig(): Observable<GetTmdbConfigResponse> {
+    return this.httpService.get<GetTmdbConfigResponse>('/configuration').pipe(
+      map((response) => response.data),
+      catchError((err) => {
+        this.logger.error('There was an error getting configuration')
+
+        return throwError(err)
+      })
+    )
   }
 }
