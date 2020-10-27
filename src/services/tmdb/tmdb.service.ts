@@ -9,7 +9,7 @@ import { GetTmdbMoviesResponse } from '../../commons/interfaces/get-tmdb-movies.
 export class TmdbService {
   constructor(private httpService: HttpService, private logger: Logger) {}
 
-  getNowPlayingMovies(
+  getNowPlayingMoviess(
     params?: GetMoviesRequest
   ): Observable<GetTmdbMoviesResponse> {
     return this.httpService
