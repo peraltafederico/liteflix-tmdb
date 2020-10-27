@@ -14,8 +14,8 @@ export class MovieService {
     private readonly logger: Logger
   ) {}
 
-  getNowPlayingMovie(params?: GetMoviesRequest): Observable<GetMoviesResponse> {
-    return this.tmdbService.getNowPlayingMovies(params).pipe(
+  getNowPlayingMovies(params?: GetMoviesRequest): Observable<GetMoviesResponse> {
+    return this.tmdbService.getNowPlayingMoviess(params).pipe(
       map(MovieHelper.normalizeMoviesFromResponse),
       catchError((err) => {
         this.logger.error('There was an error normalizing now-playing movies')
