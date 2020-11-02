@@ -9,7 +9,6 @@ import { TmdbService } from './tmdb.service'
         baseURL: `${configService.get('TMDBBaseURL')}/3`,
         params: {
           api_key: configService.get('TMDBApiKey'),
-          language: configService.get('TMDBLanguage'),
         },
       }),
       inject: [ConfigService],
