@@ -14,10 +14,10 @@ export class MovieController {
     description: 'Featured movie returned successfully',
     type: Movie,
   })
-  getNowPlayingMovie(
-    @Query() { page }: GetMoviesRequest
+  getNowPlayingMovies(
+    @Query() params: GetMoviesRequest
   ): Observable<GetMoviesResponse> {
-    return this.movieService.getNowPlayingMovie({ page })
+    return this.movieService.getNowPlayingMovies(params)
   }
 
   @Get('/upcoming')
@@ -26,9 +26,9 @@ export class MovieController {
     type: GetMoviesResponse,
   })
   getUpcomingMovies(
-    @Query() { page }: GetMoviesRequest
+    @Query() params: GetMoviesRequest
   ): Observable<GetMoviesResponse> {
-    return this.movieService.getUpcomingMovies({ page })
+    return this.movieService.getUpcomingMovies(params)
   }
 
   @Get('/popular')
@@ -37,8 +37,8 @@ export class MovieController {
     type: GetMoviesResponse,
   })
   getPopularMovies(
-    @Query() { page }: GetMoviesRequest
+    @Query() params: GetMoviesRequest
   ): Observable<GetMoviesResponse> {
-    return this.movieService.getPopularMovies({ page })
+    return this.movieService.getPopularMovies(params)
   }
 }

@@ -2,19 +2,19 @@ import { Injectable, Logger } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
 import { TmdbService } from '../../services/tmdb/tmdb.service'
-import { Genre } from './dto/genre.dto'
-import { GetGenresRequest } from './dto/get-genres-request.dto'
+import { GetConfigResponse } from './dto/GetConfigResponse.dto'
+import { ConfigHelper } from './helper/config.helper'
 
 @Injectable()
-export class GenreService {
+export class ConfigService {
   constructor(
     private readonly TmdbService: TmdbService,
     private readonly logger: Logger
   ) {}
 
-  getAll(params?: GetGenresRequest): Observable<Genre[]> {
-    return this.TmdbService.getGenres(params).pipe(
-      map((response) => response.genres),
+  getConfig(): Observable<GetConfigResponse> {
+    return this.TmdbService.getConfig().pipe(
+      map((response) => ConfigHelper.normalizeConfig(response)),
       catchError((err) => {
         this.logger.error('There was an error normalizing genres response')
 

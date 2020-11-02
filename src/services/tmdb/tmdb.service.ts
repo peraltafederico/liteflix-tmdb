@@ -1,15 +1,17 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
 import { catchError, map } from 'rxjs/operators'
+import { GetGenresRequest } from 'src/api/genre/dto/get-genres-request.dto'
 import { GetMoviesRequest } from '../../commons/dto/get-movies-request.dto'
 import { GetTmdbGenresResponse } from './interfaces/get-tmdb-genres-response.interface'
 import { GetTmdbMoviesResponse } from '../../commons/interfaces/get-tmdb-movies.response.interface'
+import { GetTmdbConfigResponse } from './interfaces/get-tmdb-config-response.interface'
 
 @Injectable()
 export class TmdbService {
   constructor(private httpService: HttpService, private logger: Logger) {}
 
-  getNowPlayingMovies(
+  getNowPlayingMoviess(
     params?: GetMoviesRequest
   ): Observable<GetTmdbMoviesResponse> {
     return this.httpService
@@ -54,9 +56,9 @@ export class TmdbService {
       )
   }
 
-  getGenres(): Observable<GetTmdbGenresResponse> {
+  getGenres(params?: GetGenresRequest): Observable<GetTmdbGenresResponse> {
     return this.httpService
-      .get<GetTmdbGenresResponse>('/genre/movie/list')
+      .get<GetTmdbGenresResponse>('/genre/movie/list', { params })
       .pipe(
         map((response) => response.data),
         catchError((err) => {
@@ -65,5 +67,16 @@ export class TmdbService {
           return throwError(err)
         })
       )
+  }
+
+  getConfig(): Observable<GetTmdbConfigResponse> {
+    return this.httpService.get<GetTmdbConfigResponse>('/configuration').pipe(
+      map((response) => response.data),
+      catchError((err) => {
+        this.logger.error('There was an error getting configuration')
+
+        return throwError(err)
+      })
+    )
   }
 }
