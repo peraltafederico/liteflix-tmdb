@@ -6,9 +6,9 @@ import { TmdbService } from './tmdb.service'
   imports: [
     HttpModule.registerAsync({
       useFactory: async (configService: ConfigService) => ({
-        baseURL: `${configService.get('TMDBBaseURL')}/3`,
+        baseURL: `${configService.get('tmdbBaseURL')}/3`,
         params: {
-          api_key: configService.get('TMDBApiKey'),
+          api_key: configService.get('tmdbApiKey'),
         },
       }),
       inject: [ConfigService],
