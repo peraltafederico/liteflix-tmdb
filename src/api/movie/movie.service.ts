@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Logger } from '@nestjs/common/services/logger.service'
 import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 import { GetMoviesRequest } from '../../commons/dto/get-movies-request.dto'
 import { TmdbService } from '../../services/tmdb/tmdb.service'
 import { GetMoviesResponse } from './dto/get-movies-response.dto'
@@ -14,9 +14,16 @@ export class MovieService {
     private readonly logger: Logger
   ) {}
 
-  getNowPlayingMovies(params?: GetMoviesRequest): Observable<GetMoviesResponse> {
+  getNowPlayingMovies(
+    params?: GetMoviesRequest
+  ): Observable<GetMoviesResponse> {
     return this.tmdbService.getNowPlayingMoviess(params).pipe(
       map(MovieHelper.normalizeMoviesFromResponse),
+      tap(() =>
+        this.logger.log(
+          'Now playing movies response has been normalized successfully'
+        )
+      ),
       catchError((err) => {
         this.logger.error('There was an error normalizing now-playing movies')
 
@@ -28,6 +35,11 @@ export class MovieService {
   getUpcomingMovies(params?: GetMoviesRequest): Observable<GetMoviesResponse> {
     return this.tmdbService.getUpcomingMovies(params).pipe(
       map(MovieHelper.normalizeMoviesFromResponse),
+      tap(() =>
+        this.logger.log(
+          'Upcoming movies response has been normalized successfully'
+        )
+      ),
       catchError((err) => {
         this.logger.error('There was an error normalizing upcoming movies')
 
@@ -39,6 +51,11 @@ export class MovieService {
   getPopularMovies(params?: GetMoviesRequest): Observable<GetMoviesResponse> {
     return this.tmdbService.getPopularMovies(params).pipe(
       map(MovieHelper.normalizeMoviesFromResponse),
+      tap(() =>
+        this.logger.log(
+          'Popular movies response has been normalized successfully'
+        )
+      ),
       catchError((err) => {
         this.logger.error('There was an error normalizing popular movies')
 

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { catchError, map, tap } from 'rxjs/operators'
 import { TmdbService } from '../../services/tmdb/tmdb.service'
 import { GetConfigResponse } from './dto/GetConfigResponse.dto'
 import { ConfigHelper } from './helper/config.helper'
@@ -15,8 +15,11 @@ export class ConfigService {
   getConfig(): Observable<GetConfigResponse> {
     return this.TmdbService.getConfig().pipe(
       map((response) => ConfigHelper.normalizeConfig(response)),
+      tap(() =>
+        this.logger.log('Config response has been normalized successfully')
+      ),
       catchError((err) => {
-        this.logger.error('There was an error normalizing genres response')
+        this.logger.error('There was an error normalizing config response')
 
         return throwError(err)
       })

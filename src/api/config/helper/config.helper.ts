@@ -1,5 +1,5 @@
 import { camelCase } from 'lodash'
-import { GetTmdbConfigResponse } from 'src/services/tmdb/interfaces/get-tmdb-config-response.interface'
+import { GetTmdbConfigResponse } from '../../../services/tmdb/interfaces/get-tmdb-config-response.interface'
 import { GetConfigResponse, Images } from '../dto/GetConfigResponse.dto'
 
 export class ConfigHelper {
