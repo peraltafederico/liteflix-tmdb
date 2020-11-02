@@ -1,7 +1,7 @@
 import { HttpService, Injectable, Logger } from '@nestjs/common'
 import { Observable, throwError } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
-import { GetGenresRequest } from 'src/api/genre/dto/get-genres-request.dto'
+import { catchError, map, tap } from 'rxjs/operators'
+import { GetGenresRequest } from '../../api/genre/dto/get-genres-request.dto'
 import { GetMoviesRequest } from '../../commons/dto/get-movies-request.dto'
 import { GetTmdbGenresResponse } from './interfaces/get-tmdb-genres-response.interface'
 import { GetTmdbMoviesResponse } from '../../commons/interfaces/get-tmdb-movies.response.interface'
@@ -18,6 +18,7 @@ export class TmdbService {
       .get<GetTmdbMoviesResponse>('/movie/now_playing', { params })
       .pipe(
         map((response) => response.data),
+        tap(() => this.logger.log('Now-playing movies returned successfully')),
         catchError((err) => {
           this.logger.error('There was an error getting now-playing movies')
 
@@ -33,6 +34,7 @@ export class TmdbService {
       .get<GetTmdbMoviesResponse>('/movie/upcoming', { params })
       .pipe(
         map((response) => response.data),
+        tap(() => this.logger.log('Upcoming movies returned successfully')),
         catchError((err) => {
           this.logger.error('There was an error getting upcoming movies')
 
@@ -48,6 +50,7 @@ export class TmdbService {
       .get<GetTmdbMoviesResponse>('/movie/popular', { params })
       .pipe(
         map((response) => response.data),
+        tap(() => this.logger.log('Popular movies returned successfully')),
         catchError((err) => {
           this.logger.error('There was an error getting popular movies')
 
@@ -61,6 +64,7 @@ export class TmdbService {
       .get<GetTmdbGenresResponse>('/genre/movie/list', { params })
       .pipe(
         map((response) => response.data),
+        tap(() => this.logger.log('Genres returned successfully')),
         catchError((err) => {
           this.logger.error('There was an error getting genres')
 
